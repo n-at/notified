@@ -1,0 +1,4 @@
+notified
+========
+
+Node notification daemon
