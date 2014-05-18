@@ -8,9 +8,9 @@ var ENV = process.env.NODE_ENV;
 function getLogger(module) {
     var moduleName = module.filename.split(path.sep).slice(-2).join('/');
 
-    if(!(moduleName in winston.loggers)) {
+    if(!(module.filename in winston.loggers)) {
         var logLevel = (ENV == 'development') ? 'debug' : 'info';
-        winston.loggers.add(moduleName, {
+        winston.loggers.add(module.filename, {
             file: {
                 filename: path.join(config.get('log_path'), config.get('log_file')),
                 json: false,
@@ -25,7 +25,7 @@ function getLogger(module) {
         });
     }
 
-    return winston.loggers.get(moduleName);
+    return winston.loggers.get(module.filename);
 }
 
 module.exports = getLogger;
