@@ -7,8 +7,10 @@ nconf.argv()
      .file(path.join(__dirname, 'config.json'));
 
 //set up paths
-nconf.set('root_path', path.join(__dirname, '..'));
-nconf.set('log_path', path.join(nconf.get('root_path'), 'logs'));
+var root = path.join(__dirname, '..');
+nconf.set('root_path', root);
+nconf.set('log_path', path.join(root, 'logs'));
+nconf.set('template_path', path.join(root, 'templates'));
 
 mkdirp.sync(nconf.get('log_path'));
 
