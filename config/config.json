@@ -4,5 +4,11 @@
 
     "log_file": "notified.log",
 
-    "body_max_length": 5242880
+    "body_max_length": 5242880,
+
+    "mongodb": {
+        "host": "localhost",
+        "post": "27017",
+        "dbname": "notified"
+    }
 }
