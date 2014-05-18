@@ -17,4 +17,4 @@ db.once('open', function() {
     log.info('Connected to MongoDB');
 });
 
-module.exports = mongoose;
+exports.mongoose = mongoose;

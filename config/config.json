@@ -4,7 +4,7 @@
 
     "log_file": "notified.log",
 
-    "body_max_length": 5242880,
+    "request_max_length": 5242880,
 
     "mongodb": {
         "host": "localhost",

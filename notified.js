@@ -22,7 +22,7 @@ http.createServer(function(req, res) {
         body += data;
 
         //flood detection
-        if(body.length > config.get('body_max_length')) {
+        if(body.length > config.get('request_max_length')) {
             res.statusCode = 413;
             res.end('Request body length limit exceeded');
             req.connection.destroy();
