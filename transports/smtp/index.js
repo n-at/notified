@@ -23,9 +23,10 @@ function SmtpTransport(config) {
     this.transport = transport;
 }
 
-SmtpTransport.prototype.notify = function(notification) {
+SmtpTransport.prototype.notify = function(notification, callback) {
     log.info('Starting notification...');
     //TODO send notification here
+    callback();
 };
 
 module.exports = SmtpTransport;

@@ -64,7 +64,8 @@ function loadTwig(template, callback) {
             load: function(tpl) {
                 template.templateInstance = tpl;
                 addTemplateToCollection(template, callback);
-            }
+            },
+            error: callback
         });
     };
 }

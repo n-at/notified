@@ -13,6 +13,8 @@
         "html": false,
 
         "override_to": true
-    }
+    },
+
+    "storeInDb": false
 
 }
