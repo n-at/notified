@@ -1,8 +1,10 @@
 {
     "transport": "smtp",
     "api_key": "secret",
+    "template": "sample.twig",
 
     "transportConfig": {
 
     }
+
 }

@@ -1,45 +1,41 @@
 var fs = require('fs');
 var path = require('path');
+var async = require('async');
+var twig = require('twig').twig;
+
 var config = require('../config');
 var log = require('./logger')(module);
 
 var notificationTemplates = null;
 
 module.exports.load = function(callback) {
-    log.info('Loading templates...');
+    log.info('Loading notification templates...');
 
-    var templates = {};
-    var templateCount = 0;
+    notificationTemplates = {};
 
     var templatePath = config.get('template_path');
-    var files = fs.readdirSync(templatePath);
-    for(var i = 0; i < files.length; i++) {
-        var fileName = files[i];
-        if(isTemplateFile(fileName)) {
-            try {
-                var templateFilePath = path.join(config.get('template_path'), fileName);
-                var templateName = fileName.substr(0, fileName.search(/\.json$/));
-                log.info('Loading template "%s"...', templateName);
 
-                var template = require(templateFilePath);
-
-                //create notification transport
-                var transportModulePath = path.join(config.get('transport_path'), template.transport);
-                log.info('Loading transport "%s" from "%s"', template.transport, transportModulePath);
-
-                var transport = require(transportModulePath);
-                template.transportInstance = new transport(template.transportConfig);
-
-                templates[templateName] = template;
-                templateCount++;
-            } catch(err) {
-                log.error('Notification template "%s" is not loaded (%s)', fileName, err.message);
-            }
+    fs.readdir(templatePath, function(err, files) {
+        if(err) {
+            log.error('Error occurred while fetching templates list');
+            callback(err);
+            return;
         }
-    }
-    log.info('Loaded %d notification templates', templateCount);
-    notificationTemplates = templates;
-    callback(templates);
+
+        async.each(files,
+            loadNotificationTemplate,
+            function(err) {
+                if(err) {
+                    log.error('Error occurred while loading templates (%s)', err.message);
+                    callback(err);
+                    return ;
+                }
+
+                log.info('Notification templates loaded (Total: %d)', Object.keys(notificationTemplates).length);
+                callback();
+            }
+        );
+    });
 };
 
 module.exports.allTemplates = function() {
@@ -59,4 +55,68 @@ module.exports.reload = function(callback) {
 
 function isTemplateFile(fileName) {
     return fileName.match(/.+\.json$/);
+}
+
+function loadTwig(template, callback) {
+    return function() {
+        twig({
+            path: path.join(config.get('template_path'), template.template),
+            load: function(tpl) {
+                template.templateInstance = tpl;
+                addTemplateToCollection(template, callback);
+            }
+        });
+    };
+}
+
+function twigLoadingError(template, callback) {
+    return function(err) {
+        log.error('Twig template not loaded for "%s" (%s)', template.name, err.message);
+        callback();
+    }
+}
+
+function addTemplateToCollection(template, callback) {
+    if(template !== null) {
+        notificationTemplates[template.name] = template;
+    }
+    callback();
+}
+
+function loadNotificationTemplate(fileName, callback) {
+    if(isTemplateFile(fileName)) {
+        var template = null;
+
+        //sync part of template loading
+        try {
+            var templateFilePath = path.join(config.get('template_path'), fileName);
+            var templateName = fileName.substr(0, fileName.search(/\.json$/));
+            log.info('Loading template "%s"...', templateName);
+
+            template = require(templateFilePath);
+            template.name = templateName;
+
+            //create notification transport
+            var transportModulePath = path.join(config.get('transport_path'), template.transport);
+            log.info('Loading transport "%s" from "%s"', template.transport, transportModulePath);
+
+            var transport = require(transportModulePath);
+            template.transportInstance = new transport(template.transportConfig);
+
+        } catch(err) {
+            log.error('Notification template "%s" is not loaded (%s)', fileName, err.message);
+            template = null;
+        }
+
+        //async part: twig
+        if(template !== null && template.template) {
+            var domain = require('domain').create();
+            domain.on('error', twigLoadingError(template, callback));
+            domain.run(loadTwig(template, callback));
+        } else {
+            addTemplateToCollection(template, callback);
+        }
+    } else {
+        callback();
+    }
 }
