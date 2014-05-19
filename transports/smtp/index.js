@@ -19,8 +19,9 @@ function SmtpTransport(config) {
 }
 
 SmtpTransport.prototype.notify = function(notification, callback) {
-    log.info('Starting notification...');
+    log.info('SMTP send...');
     //TODO send notification here
+    log.debug(notification);
     callback();
 };
 

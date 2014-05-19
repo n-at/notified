@@ -32,7 +32,7 @@ function executeNotificationTemplate(template, data) {
 
     var templateName = data['api_template'];
     var notificationDocument = null;
-    if(template.storeInDb) { //prepare notification document
+    if(template.db_save) { //prepare notification document
         notificationDocument = new Notification({
             template: templateName,
             body: data
@@ -50,21 +50,29 @@ function executeNotificationTemplate(template, data) {
     }
     data['api_template_rendered'] = renderedNotification;
 
+    //send notification
     template.transportInstance.notify(data, function(err) {
         var status = config.get('notify_not_sent');
         var dateSent = null;
         if(err) {
-            log.error('Error occurred while transferring notification "%s" (%s)', templateName, err.message);
+            log.error('Error occurred while delivering notification "%s" (%s)', templateName, err.message);
             status = config.get('notify_error');
         } else {
             status = config.get('notify_ok');
             dateSent = Date.now();
         }
 
-        if(template.saveInDb) {
+        //update document status
+        if(template.db_save) {
             notificationDocument.set('status', status);
             notificationDocument.set('dateSent', dateSent);
-            notificationDocument.save();
+            notificationDocument.save(function(err) {
+                if(err) {
+                    log.error('Error occurred while saving notification "%s", (%s)', templateName, err.message);
+                } else {
+                    log.info('Notification saved successfully');
+                }
+            });
         }
     });
 }
