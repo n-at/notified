@@ -6,7 +6,12 @@ var log = require('./libs/logger')(module);
 var notification_template = require('./libs/notification_template');
 var notification = require('./libs/notification');
 
-notification_template.load(function() {
+notification_template.load(function(err) {
+    if(err) {
+        log.error('Error occurred during the initialization');
+        return;
+    }
+
     log.log('info', 'notified started');
     http.createServer(notificationProcessing).listen(config.get('port'), config.get('host'));
 });
