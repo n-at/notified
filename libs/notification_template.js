@@ -16,25 +16,23 @@ module.exports.load = function(callback) {
     var templatePath = config.get('template_path');
 
     fs.readdir(templatePath, function(err, files) {
-        if(err) {
+        if (!err) {
+            async.each(files,
+                loadNotificationTemplate,
+                function (err) {
+                    if (err) {
+                        log.error('Error occurred while loading templates (%s)', err.message);
+                        callback(err);
+                    } else {
+                        log.info('Notification templates loaded (Total: %d)', Object.keys(notificationTemplates).length);
+                        callback();
+                    }
+                }
+            );
+        } else {
             log.error('Error occurred while fetching templates list');
             callback(err);
-            return;
         }
-
-        async.each(files,
-            loadNotificationTemplate,
-            function(err) {
-                if(err) {
-                    log.error('Error occurred while loading templates (%s)', err.message);
-                    callback(err);
-                    return ;
-                }
-
-                log.info('Notification templates loaded (Total: %d)', Object.keys(notificationTemplates).length);
-                callback();
-            }
-        );
     });
 };
 
@@ -98,6 +96,9 @@ function loadNotificationTemplate(fileName, callback) {
             template.name = templateName;
 
             //create notification transport
+            if(!template.transport) {
+                log.error('Transport is not set for notification "%s"', templateName);
+            }
             var transportModulePath = path.join(config.get('transport_path'), template.transport);
             log.info('Loading transport "%s" from "%s"', template.transport, transportModulePath);
 
