@@ -19,12 +19,18 @@ module.exports.load = function(callback) {
                 log.info('Loading template "%s"...', templateName);
 
                 var template = require(fileName);
-                //TODO create and init transport here
+
+                //create notification transport
+                var transportModulePath = path.join(config.get('transport_path'), template.transport);
+                log.info('Loading transport from "%s"', transportModulePath);
+
+                var transport = require(transportModulePath);
+                template.transportInstance = new transport(template.transportConfig);
 
                 templates[templateName] = template;
                 templateCount++;
             } catch(err) {
-                log.error('Notification template (%s) not loaded (%s)', files[i], err.message);
+                log.error('Notification template "%s" is not loaded (%s)', files[i], err.message);
             }
         }
     }
