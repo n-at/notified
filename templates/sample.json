@@ -1,0 +1,4 @@
+{
+    "transport": "smtp",
+    "api_key": "secret"
+}

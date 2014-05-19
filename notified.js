@@ -3,10 +3,14 @@ var qs = require('querystring');
 
 var config = require('./config');
 var log = require('./libs/logger')(module);
+var notification_template = require('./libs/notification_template');
 
-log.log('info', 'notified started');
+notification_template.load(function() {
+    log.log('info', 'notified started');
+    http.createServer(notificationProcessing).listen(config.get('port'), config.get('host'));
+});
 
-http.createServer(function(req, res) {
+function notificationProcessing(req, res) {
     log.log('info', 'New request');
 
     if(req.method != 'POST') {
@@ -55,4 +59,4 @@ http.createServer(function(req, res) {
         req.connection.destroy();
         log.error('Request processing error');
     });
-}).listen(config.get('port'), config.get('host'));
+}
