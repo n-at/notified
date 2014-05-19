@@ -10,8 +10,8 @@ var dsn = 'mongodb://'
 mongoose.connect(dsn);
 
 var db = mongoose.connection;
-db.on('error', function() {
-    log.error('MongoDB connection failure');
+db.on('error', function(err) {
+    log.error('MongoDB connection failure (%s)', err.message);
 });
 db.once('open', function() {
     log.info('Connected to MongoDB');

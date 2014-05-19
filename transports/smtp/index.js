@@ -4,7 +4,7 @@ var log = require('../../libs/logger')(module);
 
 function SmtpTransport(config) {
     this.config = applyConfig(config);
-    var transport = nodemailer.createTransport('SMTP', {
+    this.transport = nodemailer.createTransport('SMTP', {
         service: this.config.service,
         host: this.config.host,
         port: this.config.port,
@@ -16,11 +16,6 @@ function SmtpTransport(config) {
         ignoreTLS: !this.config.tls,
         maxConnections: this.config.poolSize
     });
-    transport.on('error', function(err) {
-        log.error('SMTP transport error: %s', err.message);
-    });
-
-    this.transport = transport;
 }
 
 SmtpTransport.prototype.notify = function(notification, callback) {
@@ -37,13 +32,18 @@ function applyConfig(config) {
             config[option] = defaultConfig[option];
         }
     }
+    return config;
 }
 
 var defaultConfig = {
     //connection options
+    service: null,
+    host: null,
     port: 25,
     secure: false,
     tls: true,
+    username: null,
+    password: null,
     poolSize: 5,
 
     //message options
