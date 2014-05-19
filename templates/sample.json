@@ -4,7 +4,15 @@
     "template": "sample.twig",
 
     "transportConfig": {
+        "host": "smtp.example.com",
+        "username": "user",
+        "password": "secret",
 
+        "from": "user@example.com",
+        "subject": "Notification",
+        "html": false,
+
+        "override_to": true
     }
 
 }
