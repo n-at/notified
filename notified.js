@@ -4,6 +4,7 @@ var qs = require('querystring');
 var config = require('./config');
 var log = require('./libs/logger')(module);
 var notification_template = require('./libs/notification_template');
+var notification = require('./libs/notification');
 
 notification_template.load(function() {
     log.log('info', 'notified started');
@@ -47,10 +48,13 @@ function notificationProcessing(req, res) {
             log.error('Bad request');
         }
 
-        console.log(postData); //TODO real data processing here :)
-
-        res.statusCode = 200;
-        res.end('OK');
+        if(notification.send(postData)) {
+            res.statusCode = 200;
+            res.end('OK');
+        } else {
+            res.statusCode = 400;
+            res.end('Wrong template or API key');
+        }
     });
 
     req.on('error', function() {

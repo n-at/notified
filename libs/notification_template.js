@@ -42,8 +42,12 @@ module.exports.load = function(callback) {
     callback(templates);
 };
 
-module.exports.get = function() {
+module.exports.allTemplates = function() {
     return notificationTemplates;
+};
+
+module.exports.get = function(templateName) {
+    return notificationTemplates[templateName];
 };
 
 module.exports.reload = function(callback) {
