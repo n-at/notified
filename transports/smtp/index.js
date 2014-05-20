@@ -20,9 +20,51 @@ function SmtpTransport(config) {
 
 SmtpTransport.prototype.notify = function(notification, callback) {
     log.debug('Preparing message...');
-    //TODO send notification here
-    log.debug(notification);
-    callback();
+
+    var message = {};
+
+    //from
+    message.from = (this.config.override_from) ? notification.api_smtp_from : this.config.from;
+    if(!message.from) {
+        log.debug('From value is empty');
+    }
+
+    //to
+    message.to = (this.config.override_to) ? notification.api_smtp_to : this.config.to;
+    if(!message.to) {
+        callback(new Error('To value required but empty'));
+        return;
+    }
+
+    //cc, bcc, reply_to
+    message.cc = (this.config.override_cc) ? notification.api_smtp_cc : this.config.cc;
+    message.bcc = (this.config.override_bcc) ? notification.api_smtp_bcc : this.config.bcc;
+    message.replyTo = (this.config.override_reply_to) ? notification.api_smtp_reply_to : this.config.reply_to;
+
+    //subject
+    message.subject = (this.config.override_subject) ? notification.api_smtp_subject : this.config.subject;
+    if(!message.subject) {
+        log.debug('Message missing subject');
+    }
+
+    //body
+    var body = (this.config.override_body) ? notification.api_template_rendered : this.config.body;
+    if(!body) {
+        log.debug('Message body is empty');
+        body = '';
+    }
+    if(this.config.html) {
+        message.html = body;
+    } else {
+        message.text = body;
+    }
+
+    //charset
+    message.charset = this.config.charset ? this.config.charset : 'utf-8';
+
+    //TODO add attachments
+
+    this.transport.sendMail(message, callback);
 };
 
 function updateConfig(config) {
