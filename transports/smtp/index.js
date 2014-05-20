@@ -68,21 +68,28 @@ SmtpTransport.prototype.notify = function(notification, callback) {
 };
 
 function updateConfig(config) {
+    //load default config
     for(var option in defaultConfig) {
         if(defaultConfig.hasOwnProperty(option) && config.hasOwnProperty(option) == false) {
             config[option] = defaultConfig[option];
         }
     }
+
+    //connection options
+    if(!config.service) {
+        if(config.host === undefined) {
+            log.error('Host is undefined');
+        }
+        if(config.port === undefined) config.port = 25;
+        if(config.secure === undefined) config.secure = false;
+        if(config.tls === undefined) config.tls = true;
+    }
+
     return config;
 }
 
 var defaultConfig = {
     //connection options
-    service: null,
-    host: null,
-    port: 25,
-    secure: false,
-    tls: true,
     username: null,
     password: null,
     pool_size: 5,

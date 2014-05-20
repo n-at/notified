@@ -59,6 +59,7 @@ function executeNotificationTemplate(template, data) {
             log.error('Error occurred while delivering notification "%s" (%s)', templateName, err.message);
             status = config.get('notify_error');
         } else {
+            log.debug('Notification "%s" sent successfully', templateName);
             status = config.get('notify_ok');
             dateSent = Date.now();
         }
