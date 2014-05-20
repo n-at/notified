@@ -62,7 +62,10 @@ SmtpTransport.prototype.notify = function(notification, callback) {
     //charset
     message.charset = this.config.charset ? this.config.charset : 'utf-8';
 
-    //TODO add attachments
+    //attachments
+    if(this.config.allow_attachments) {
+        message.attachments = getAttachments(notification);
+    }
 
     this.transport.sendMail(message, callback);
 };
@@ -88,6 +91,19 @@ function updateConfig(config) {
     return config;
 }
 
+function getAttachments(notificationData) {
+    var attachments = [];
+    for(var optionName in notificationData) {
+        if(notificationData.hasOwnProperty(optionName) && optionName.match(/^api_smtp_attachment_.+/)) {
+            attachments.push({
+                fileName: optionName.substr('api_smtp_attachment_'.length),
+                contents: (new Buffer(notificationData[optionName], 'base64'))
+            });
+        }
+    }
+    return attachments;
+}
+
 var defaultConfig = {
     //connection options
     username: null,
@@ -104,6 +120,7 @@ var defaultConfig = {
     body: '',
     charset: 'utf-8',
     html: true,
+    allow_attachments: false,
 
     //override options
     override_to: false,

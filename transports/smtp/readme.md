@@ -29,6 +29,7 @@ Message configuration options:
 + *body* - message body (empty by default)
 + *charset* - notification body charset (default **utf-8**)
 + *html* - use HTML in message body (default **true**)
++ *allow_attachments* - allow to add attachments from notification fields (default **false**). Attachments is Base64 encoded
 
 Override options:
 
