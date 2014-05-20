@@ -10,13 +10,13 @@ module.exports.send = function(notificationData) {
     var apiKey = notificationData['api_key'];
 
     if(templateName === undefined || apiKey === undefined) {
-        log.info('Notification is missing template name or API key');
+        log.warn('Notification is missing template name or API key');
         return false;
     }
 
     var template = notification_template.get(templateName);
     if(template === undefined || template['api_key'] !== apiKey) {
-        log.info('API key mismatch');
+        log.warn('API key mismatch');
         return false;
     }
 
@@ -28,7 +28,7 @@ module.exports.send = function(notificationData) {
 };
 
 function executeNotificationTemplate(template, data) {
-    log.info('Processing notification...');
+    log.debug('Processing notification...');
 
     var templateName = data['api_template'];
     var notificationDocument = null;
@@ -70,7 +70,7 @@ function executeNotificationTemplate(template, data) {
                 if(err) {
                     log.error('Error occurred while saving notification "%s", (%s)', templateName, err.message);
                 } else {
-                    log.info('Notification saved successfully');
+                    log.debug('Notification saved successfully');
                 }
             });
         }

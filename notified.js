@@ -1,5 +1,5 @@
 var http = require('http');
-var qs = require('querystring');
+var querystring = require('querystring');
 
 var config = require('./config');
 var log = require('./libs/logger')(module);
@@ -17,7 +17,7 @@ notification_template.load(function(err) {
 });
 
 function notificationProcessing(req, res) {
-    log.log('info', 'New request');
+    log.debug('New request');
 
     if(req.method != 'POST') {
         res.statusCode = 405;
@@ -41,16 +41,16 @@ function notificationProcessing(req, res) {
     });
 
     req.on('end', function() {
-        log.info('Received %d bytes', body.length);
+        log.debug('Received %d bytes', body.length);
 
         //parse request
         var postData = null;
         try {
-            postData = qs.parse(body);
+            postData = querystring.parse(body);
         } catch(e) {
             res.statusCode = 400;
             res.end('Bad (probably malformed) request');
-            log.error('Bad request');
+            log.info('Bad request');
         }
 
         if(notification.send(postData)) {
@@ -62,10 +62,10 @@ function notificationProcessing(req, res) {
         }
     });
 
-    req.on('error', function() {
+    req.on('error', function(err) {
         res.statusCode = 500;
         res.end('An error occurred while processing the request');
         req.connection.destroy();
-        log.error('Request processing error');
+        log.error('Request processing error (%s)', err.message);
     });
 }

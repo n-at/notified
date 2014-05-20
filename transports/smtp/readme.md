@@ -12,7 +12,7 @@ Server configuration options:
 + *port* - port of SMTP server (default **25**)
 + *secure* - use SSL (default **false**)
 + *tls* - use TLS (default **true**)
-+ *poolSize* - max number of connections in the pool (default **5**)
++ *pool_size* - max number of connections in the pool (default **5**)
 
 If service specified, options *hostname*, *port*, *secure* and *tls* are not needed.
 

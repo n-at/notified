@@ -3,7 +3,7 @@ var nodemailer = require('nodemailer');
 var log = require('../../libs/logger')(module);
 
 function SmtpTransport(config) {
-    this.config = applyConfig(config);
+    this.config = updateConfig(config);
     this.transport = nodemailer.createTransport('SMTP', {
         service: this.config.service,
         host: this.config.host,
@@ -14,20 +14,18 @@ function SmtpTransport(config) {
             pass: this.config.password
         },
         ignoreTLS: !this.config.tls,
-        maxConnections: this.config.poolSize
+        maxConnections: this.config.pool_size
     });
 }
 
 SmtpTransport.prototype.notify = function(notification, callback) {
-    log.info('SMTP send...');
+    log.debug('SMTP send...');
     //TODO send notification here
     log.debug(notification);
     callback();
 };
 
-module.exports = SmtpTransport;
-
-function applyConfig(config) {
+function updateConfig(config) {
     for(var option in defaultConfig) {
         if(defaultConfig.hasOwnProperty(option) && config.hasOwnProperty(option) == false) {
             config[option] = defaultConfig[option];
@@ -45,7 +43,7 @@ var defaultConfig = {
     tls: true,
     username: null,
     password: null,
-    poolSize: 5,
+    pool_size: 5,
 
     //message options
     to: '',
@@ -67,3 +65,5 @@ var defaultConfig = {
     override_reply_to: false,
     override_body: true
 };
+
+module.exports = SmtpTransport;
