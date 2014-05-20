@@ -5,7 +5,7 @@ var log = require('./logger')(module);
 var dsn = 'mongodb://'
     + config.get('mongodb:host')
     + ':' + config.get('mongodb:port')
-    + '/' + config.get('mongodb::dbname');
+    + '/' + config.get('mongodb:dbname');
 
 mongoose.connect(dsn);
 

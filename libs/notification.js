@@ -42,6 +42,7 @@ function executeNotificationTemplate(template, data) {
     //render notification body
     var renderedNotification = null;
     if(template.template) {
+        log.debug('Rendering notification body...');
         try {
             renderedNotification = template.templateInstance.render(data);
         } catch(err) {
