@@ -15,7 +15,11 @@ module.exports.send = function(notificationData) {
     }
 
     var template = notification_template.get(templateName);
-    if(template === undefined || template['api_key'] !== apiKey) {
+    if(template === undefined) {
+        log.warn('Template "%s" not found', templateName);
+        return false;
+    }
+    if(template['api_key'] !== apiKey) {
         log.warn('API key mismatch');
         return false;
     }

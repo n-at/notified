@@ -22,7 +22,7 @@ function notificationProcessing(req, res) {
     if(req.method != 'POST') {
         res.statusCode = 405;
         res.end('Only POST allowed');
-        log.info('Invalid request method: ' + req.method);
+        log.warn('Invalid request method: ' + req.method);
         return;
     }
 
@@ -36,7 +36,7 @@ function notificationProcessing(req, res) {
             res.statusCode = 413;
             res.end('Request body length limit exceeded');
             req.connection.destroy();
-            log.info('Request length limit exceeded');
+            log.warn('Request length limit exceeded');
         }
     });
 
@@ -50,7 +50,7 @@ function notificationProcessing(req, res) {
         } catch(e) {
             res.statusCode = 400;
             res.end('Bad (probably malformed) request');
-            log.info('Bad request');
+            log.warn('Bad request');
         }
 
         if(notification.send(postData)) {
