@@ -8,7 +8,7 @@ var notification = require('./libs/notification');
 
 notification_template.load(function(err) {
     if(err) {
-        log.error('Error occurred during the initialization');
+        log.error('Error occurred during the initialization (%s)', err.message);
         return;
     }
 
