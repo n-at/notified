@@ -4,7 +4,6 @@ var mkdirp = require('mkdirp');
 
 var SmtpTransport = require('../smtp');
 var config = require('../../config');
-var log = require('../../libs/logger')(module);
 
 function PickupTransport(config) {
     this.config = updateConfig(config);

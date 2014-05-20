@@ -1,6 +1,5 @@
 var querystring = require('querystring');
 var http = require('http');
-var fs = require('fs');
 
 function notified(server, template, apiKey, message, callback) {
     message['api_template'] = template;
