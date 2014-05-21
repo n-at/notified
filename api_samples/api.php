@@ -16,7 +16,7 @@ $template = 'sample';
 $api_key = 'secret';
 
 $message = array(
-    'api_smtp_to' => 'john@example.com',
+    'api_to' => 'john@example.com',
 );
 
 echo notified($server, $template, $api_key, $message);

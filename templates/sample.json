@@ -3,7 +3,7 @@
     "api_key": "secret",
     "template": "sample.twig",
 
-    "transportConfig": {
+    "transport_config": {
         "host": "smtp.example.com",
         "username": "user",
         "password": "secret",

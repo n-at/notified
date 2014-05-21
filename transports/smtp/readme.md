@@ -31,14 +31,16 @@ Message configuration options:
 + *html* - use HTML in message body (default **true**)
 + *allow_attachments* - allow to add attachments from notification fields (default **false**). Attachments is Base64 encoded
 
+Notification field that contains an attachment should have name like *api_attach_<file_name>* and it's content should be Base64-encoded.
+
 Override options:
 
-+ *override_to* - get the **To** field from notification field *api_smtp_to*
-+ *override_from* - get the **From** field from notification field *api_smtp_from*
-+ *override_subject* - get the **Subject** field from notification field *api_smtp_subject*
-+ *override_cc* - get the **Cc** field from notification field *api_smtp_cc*
-+ *override_bcc* - get the **Bcc** field from notification field *api_smtp_bcc*
-+ *override_reply_to* - get the *Reply-To* field from notification field *api_smtp_reply_to*
++ *override_to* - get the **To** field from notification field *api_to*
++ *override_from* - get the **From** field from notification field *api_from*
++ *override_subject* - get the **Subject** field from notification field *api_subject*
++ *override_cc* - get the **Cc** field from notification field *api_cc*
++ *override_bcc* - get the **Bcc** field from notification field *api_bcc*
++ *override_reply_to* - get the **Reply-To** field from notification field *api_reply_to*
 + *override_body* - get body of message from notification data
 
 **Note:** all *override* fields are **false** by default, except of *override_body*.

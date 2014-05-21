@@ -24,25 +24,25 @@ SmtpTransport.prototype.notify = function(notification, callback) {
     var message = {};
 
     //from
-    message.from = (this.config.override_from) ? notification.api_smtp_from : this.config.from;
+    message.from = (this.config.override_from) ? notification.api_from : this.config.from;
     if(!message.from) {
         log.debug('From value is empty');
     }
 
     //to
-    message.to = (this.config.override_to) ? notification.api_smtp_to : this.config.to;
+    message.to = (this.config.override_to) ? notification.api_to : this.config.to;
     if(!message.to) {
         callback(new Error('To value required but empty'));
         return;
     }
 
     //cc, bcc, reply_to
-    message.cc = (this.config.override_cc) ? notification.api_smtp_cc : this.config.cc;
-    message.bcc = (this.config.override_bcc) ? notification.api_smtp_bcc : this.config.bcc;
-    message.replyTo = (this.config.override_reply_to) ? notification.api_smtp_reply_to : this.config.reply_to;
+    message.cc = (this.config.override_cc) ? notification.api_cc : this.config.cc;
+    message.bcc = (this.config.override_bcc) ? notification.api_bcc : this.config.bcc;
+    message.replyTo = (this.config.override_reply_to) ? notification.api_reply_to : this.config.reply_to;
 
     //subject
-    message.subject = (this.config.override_subject) ? notification.api_smtp_subject : this.config.subject;
+    message.subject = (this.config.override_subject) ? notification.api_subject : this.config.subject;
     if(!message.subject) {
         log.debug('Message missing subject');
     }
@@ -94,9 +94,9 @@ function updateConfig(config) {
 function getAttachments(notificationData) {
     var attachments = [];
     for(var optionName in notificationData) {
-        if(notificationData.hasOwnProperty(optionName) && optionName.match(/^api_smtp_attachment_.+/)) {
+        if(notificationData.hasOwnProperty(optionName) && optionName.match(/^api_attach_.+/)) {
             attachments.push({
-                fileName: optionName.substr('api_smtp_attachment_'.length),
+                fileName: optionName.substr('api_attach_'.length),
                 contents: (new Buffer(notificationData[optionName], 'base64'))
             });
         }

@@ -98,7 +98,7 @@ function loadNotificationTemplate(fileName, callback) {
             log.info('Loading transport "%s" from "%s"', template.transport, transportModulePath);
 
             var transport = require(transportModulePath);
-            template.transportInstance = new transport(template.transportConfig);
+            template.transportInstance = new transport(template.transport_config);
 
         } catch(err) {
             log.error('Notification template "%s" is not loaded (%s)', fileName, err.message);

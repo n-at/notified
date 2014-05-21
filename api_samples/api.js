@@ -33,7 +33,7 @@ function notified(server, template, apiKey, message, callback) {
     req.end();
 }
 
-notified({host: 'localhost', port: '3000'}, 'sample', 'secret', {to: 'john@example.com'}, function(err, data) {
+notified({host: 'localhost', port: '3000'}, 'sample', 'secret', {api_to: 'john@example.com'}, function(err, data) {
     if(err) console.log(err.message);
     if(data) console.log(data);
 });
