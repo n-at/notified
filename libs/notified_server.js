@@ -1,3 +1,6 @@
+var querystring = require('querystring');
+
+var config = require('../config');
 var log = require('./logger')(module);
 var notification = require('./notification');
 

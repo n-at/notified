@@ -6,6 +6,11 @@ var Notification = require('./models/notification').Notification;
 
 module.exports.send = function(notificationData) {
 
+    if(!notificationData) {
+        log.warn('empty notification');
+        return false;
+    }
+
     var templateName = notificationData['api_template'];
     var apiKey = notificationData['api_key'];
 

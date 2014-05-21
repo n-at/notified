@@ -21,6 +21,11 @@ switch(argv._[0]) {
         });
         break;
 
+    case 'reload':
+        console.log('Reloading notified...');
+        daemon.sendSignal('SIGNOTIFIEDRELOAD');
+        break;
+
     case 'status':
         var pid = daemon.status();
         if(pid) {
