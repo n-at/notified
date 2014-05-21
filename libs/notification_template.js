@@ -44,11 +44,6 @@ module.exports.get = function(templateName) {
     return notificationTemplates[templateName];
 };
 
-module.exports.reload = function(callback) {
-    notificationTemplates = null;
-    module.exports.load(callback);
-};
-
 //utility functions
 
 function isTemplateFile(fileName) {
