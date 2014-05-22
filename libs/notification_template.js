@@ -5,6 +5,7 @@ var twig = require('twig').twig;
 var config = require('../config');
 var log = require('./logger')(module);
 
+
 var notificationTemplates = null;
 
 
@@ -36,6 +37,30 @@ function isTemplateFile(fileName) {
 }
 
 
+function loadTransport(transportName, transportConfig) {
+    if(!transportName) {
+        throw new Error('Transport is undefined');
+    }
+
+    var transportModulePath = path.join(config.get('transport_path'), transportName);
+    log.info('Loading transport "%s" from "%s"', transportName, transportModulePath);
+
+    var Transport = require(transportModulePath);
+    return new Transport(transportConfig);
+}
+
+
+function loadTwigTemplate(templateName) {
+    if(!templateName) return null;
+
+    var twigPath = path.join(config.get('template_path'), templateName);
+    return twig({
+        path: twigPath,
+        async: false
+    });
+}
+
+
 function loadNotificationTemplate(fileName) {
     if(isTemplateFile(fileName)) {
         try {
@@ -46,24 +71,8 @@ function loadNotificationTemplate(fileName) {
             var template = require(templateFilePath);
             template.name = templateName;
 
-            //create notification transport
-            if(!template.transport) {
-                log.error('Transport is not set for notification "%s"', templateName);
-            }
-            var transportModulePath = path.join(config.get('transport_path'), template.transport);
-            log.info('Loading transport "%s" from "%s"', template.transport, transportModulePath);
-
-            var Transport = require(transportModulePath);
-            template.transportInstance = new Transport(template.transport_config);
-
-            //load twig template
-            if(template.template) {
-                var twigPath = path.join(config.get('template_path'), template.template);
-                template.templateInstance = twig({
-                    path: twigPath,
-                    async: false
-                });
-            }
+            template.transportInstance = loadTransport(template.transport, template.transport_config);
+            template.templateInstance = loadTwigTemplate(template.template);
 
             notificationTemplates[templateName] = template;
         } catch(err) {

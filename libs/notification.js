@@ -50,7 +50,7 @@ function executeNotificationTemplate(template, data) {
 
     //render notification body
     var renderedNotification = null;
-    if(template.template) {
+    if(template.templateInstance) {
         log.debug('Rendering notification body...');
         try {
             renderedNotification = template.templateInstance.render(data);
