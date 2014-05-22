@@ -5,7 +5,13 @@ Node.js notification daemon
 
 ##Installation
 
-Just run
+**Requirements:**
+
++ *node.js*
++ *npm*
++ *MongoDB*
+
+To install, just run:
 
     git clone https://github.com/n-at/notified.git
     cd notified
@@ -24,3 +30,4 @@ notified also can be run as a system daemon:
 ##Documentation
 
 notified modules documentation can be found in files *readme.md* in respective directories.
+Also take a look at *templates/sample.json* notification template.
