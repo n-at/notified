@@ -1,4 +1,4 @@
-var querystring = require('querystring');
+var qs = require('qs');
 
 var config = require('../config');
 var log = require('./logger')(module);
@@ -34,7 +34,7 @@ function notificationProcessing(req, res) {
         //parse request
         var postData = null;
         try {
-            postData = querystring.parse(body);
+            postData = qs.parse(body);
         } catch(e) {
             res.statusCode = 400;
             res.end('Bad (probably malformed) request');
