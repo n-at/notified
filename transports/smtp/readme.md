@@ -6,6 +6,7 @@ SMTP transport implementation uses [NodeMailer](http://www.nodemailer.com).
 Server configuration options:
 
 + *service* - service identifier (optional, see the list of supported services below)
++ *auth* - does the server need an authentication data (default **true**)
 + *username* - user name on server
 + *password* - password for user
 + *hostname* - hostname of SMTP server
