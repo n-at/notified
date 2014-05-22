@@ -4,18 +4,21 @@ var log = require('../../libs/logger')(module);
 
 function SmtpTransport(config) {
     this.config = updateConfig(config || {});
-    this.transport = nodemailer.createTransport('SMTP', {
+    var options = {
         service: this.config.service,
         host: this.config.host,
         port: this.config.port,
         secureConnection: this.config.secure,
-        auth: {
-            user: this.config.username,
-            pass: this.config.password
-        },
         ignoreTLS: !this.config.tls,
         maxConnections: this.config.pool_size
-    });
+    };
+    if(this.config.auth) {
+        options.auth = {
+            user: this.config.username,
+            pass: this.config.password
+        }
+    }
+    this.transport = nodemailer.createTransport('SMTP', options);
 }
 
 SmtpTransport.prototype.notify = function(notification, callback) {
@@ -106,6 +109,7 @@ function getAttachments(notificationData) {
 
 var defaultConfig = {
     //connection options
+    auth: true,
     username: null,
     password: null,
     pool_size: 5,
