@@ -3,7 +3,7 @@ var nodemailer = require('nodemailer');
 var log = require('../../libs/logger')(module);
 
 function SmtpTransport(config) {
-    this.config = updateConfig(config);
+    this.config = updateConfig(config || {});
     this.transport = nodemailer.createTransport('SMTP', {
         service: this.config.service,
         host: this.config.host,

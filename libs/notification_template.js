@@ -38,15 +38,12 @@ function isTemplateFile(fileName) {
 
 function loadNotificationTemplate(fileName) {
     if(isTemplateFile(fileName)) {
-        var template = null;
-
-        //sync part of template loading
         try {
             var templateFilePath = path.join(config.get('template_path'), fileName);
             var templateName = fileName.substr(0, fileName.search(/\.json$/));
             log.info('Loading template "%s"...', templateName);
 
-            template = require(templateFilePath);
+            var template = require(templateFilePath);
             template.name = templateName;
 
             //create notification transport
@@ -56,8 +53,8 @@ function loadNotificationTemplate(fileName) {
             var transportModulePath = path.join(config.get('transport_path'), template.transport);
             log.info('Loading transport "%s" from "%s"', template.transport, transportModulePath);
 
-            var transport = require(transportModulePath);
-            template.transportInstance = new transport(template.transport_config);
+            var Transport = require(transportModulePath);
+            template.transportInstance = new Transport(template.transport_config);
 
             //load twig template
             if(template.template) {
@@ -68,7 +65,7 @@ function loadNotificationTemplate(fileName) {
                 });
             }
 
-            notificationTemplates[template.name] = template;
+            notificationTemplates[templateName] = template;
         } catch(err) {
             log.error('Notification template "%s" is not loaded (%s)', fileName, err.message);
         }

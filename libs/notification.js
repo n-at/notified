@@ -39,7 +39,7 @@ module.exports.send = function(notificationData) {
 function executeNotificationTemplate(template, data) {
     log.debug('Processing notification...');
 
-    var templateName = data['api_template'];
+    var templateName = template.name;
     var notificationDocument = null;
     if(template.db_save) { //prepare notification document
         notificationDocument = new Notification({
@@ -81,7 +81,7 @@ function executeNotificationTemplate(template, data) {
                 if(err) {
                     log.error('Error occurred while saving notification "%s", (%s)', templateName, err.message);
                 } else {
-                    log.debug('Notification saved successfully');
+                    log.debug('Notification "%s" saved successfully', templateName);
                 }
             });
         }

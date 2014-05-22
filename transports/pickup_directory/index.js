@@ -6,7 +6,7 @@ var SmtpTransport = require('../smtp');
 var config = require('../../config');
 
 function PickupTransport(config) {
-    this.config = updateConfig(config);
+    this.config = updateConfig(config || {});
     mkdirp.sync(this.config.directory);
     this.transport = nodemailer.createTransport('PICKUP', this.config);
 }
