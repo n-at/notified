@@ -1,6 +1,5 @@
 var fs = require('fs');
 var path = require('path');
-var async = require('async');
 var twig = require('twig').twig;
 
 var config = require('../config');
@@ -8,7 +7,8 @@ var log = require('./logger')(module);
 
 var notificationTemplates = null;
 
-module.exports.load = function(callback) {
+
+function loadTemplates(callback) {
     log.info('Loading notification templates...');
 
     notificationTemplates = {};
@@ -17,67 +17,26 @@ module.exports.load = function(callback) {
 
     fs.readdir(templatePath, function(err, files) {
         if (!err) {
-            async.each(files,
-                loadNotificationTemplate,
-                function (err) {
-                    if (err) {
-                        log.error('Error occurred while loading templates (%s)', err.message);
-                        callback(err);
-                    } else {
-                        log.info('Notification templates loaded (Total: %d)', Object.keys(notificationTemplates).length);
-                        callback();
-                    }
-                }
-            );
+            for(var i = 0; i < files.length; i++) {
+                var fileName = files[i];
+                loadNotificationTemplate(fileName);
+            }
+            log.info('Notification templates loaded (Total: %d)', Object.keys(notificationTemplates).length);
+            callback();
         } else {
-            log.error('Error occurred while fetching templates list');
+            log.error('Error occurred while fetching templates list (%s)', err.message);
             callback(err);
         }
     });
-};
+}
 
-module.exports.allTemplates = function() {
-    return notificationTemplates;
-};
-
-module.exports.get = function(templateName) {
-    return notificationTemplates[templateName];
-};
-
-//utility functions
 
 function isTemplateFile(fileName) {
     return fileName.match(/.+\.json$/);
 }
 
-function loadTwig(template, callback) {
-    return function() {
-        twig({
-            path: path.join(config.get('template_path'), template.template),
-            load: function(tpl) {
-                template.templateInstance = tpl;
-                addTemplateToCollection(template, callback);
-            },
-            error: twigLoadingError(template, callback)
-        });
-    };
-}
 
-function twigLoadingError(template, callback) {
-    return function(err) {
-        log.error('Twig template not loaded for "%s" (%s)', template.name, err.message);
-        callback();
-    }
-}
-
-function addTemplateToCollection(template, callback) {
-    if(template !== null) {
-        notificationTemplates[template.name] = template;
-    }
-    callback();
-}
-
-function loadNotificationTemplate(fileName, callback) {
+function loadNotificationTemplate(fileName) {
     if(isTemplateFile(fileName)) {
         var template = null;
 
@@ -100,20 +59,28 @@ function loadNotificationTemplate(fileName, callback) {
             var transport = require(transportModulePath);
             template.transportInstance = new transport(template.transport_config);
 
+            //load twig template
+            if(template.template) {
+                var twigPath = path.join(config.get('template_path'), template.template);
+                template.templateInstance = twig({
+                    path: twigPath,
+                    async: false
+                });
+            }
+
+            notificationTemplates[template.name] = template;
         } catch(err) {
             log.error('Notification template "%s" is not loaded (%s)', fileName, err.message);
-            template = null;
         }
-
-        //async part: twig
-        if(template !== null && template.template) {
-            var domain = require('domain').create();
-            domain.on('error', twigLoadingError(template, callback));
-            domain.run(loadTwig(template, callback));
-        } else {
-            addTemplateToCollection(template, callback);
-        }
-    } else {
-        callback();
     }
 }
+
+
+module.exports = {
+
+    load: loadTemplates,
+
+    get: function(templateName) {
+        return notificationTemplates[templateName];
+    }
+};
