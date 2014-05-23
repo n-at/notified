@@ -1,5 +1,5 @@
 var mongoose = require('../mongodb').mongoose;
-var qs = require('querystring');
+var qs = require('qs');
 var Schema = mongoose.Schema;
 
 var schema = new Schema({
