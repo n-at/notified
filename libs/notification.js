@@ -11,8 +11,8 @@ module.exports.send = function(notificationData) {
         return false;
     }
 
-    var templateName = notificationData['api_template'];
-    var apiKey = notificationData['api_key'];
+    var templateName = notificationData.api_template;
+    var apiKey = notificationData.api_key;
 
     if(templateName === undefined || apiKey === undefined) {
         log.warn('Notification is missing template name or API key');
@@ -24,7 +24,7 @@ module.exports.send = function(notificationData) {
         log.warn('Template "%s" not found', templateName);
         return false;
     }
-    if(template['api_key'] !== apiKey) {
+    if(template.api_key !== apiKey) {
         log.warn('API key mismatch');
         return false;
     }
@@ -58,7 +58,7 @@ function executeNotificationTemplate(template, data) {
             log.error('Error occurred while rendering notification "%s" (%s)', templateName, err.message);
         }
     }
-    data['api_template_rendered'] = renderedNotification;
+    data.api_template_rendered = renderedNotification;
 
     //send notification
     template.transportInstance.notify(data, function(err) {

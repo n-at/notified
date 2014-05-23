@@ -16,7 +16,7 @@ function SmtpTransport(config) {
         options.auth = {
             user: this.config.username,
             pass: this.config.password
-        }
+        };
     }
     this.transport = nodemailer.createTransport('SMTP', options);
 }
@@ -76,7 +76,7 @@ SmtpTransport.prototype.notify = function(notification, callback) {
 function updateConfig(config) {
     //load default config
     for(var option in defaultConfig) {
-        if(defaultConfig.hasOwnProperty(option) && config.hasOwnProperty(option) == false) {
+        if(defaultConfig.hasOwnProperty(option) && config.hasOwnProperty(option) === false) {
             config[option] = defaultConfig[option];
         }
     }

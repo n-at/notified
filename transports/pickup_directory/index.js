@@ -16,7 +16,7 @@ PickupTransport.prototype.notify = SmtpTransport.prototype.notify;
 function updateConfig(transportConfig) {
     //load default config
     for(var option in defaultConfig) {
-        if(defaultConfig.hasOwnProperty(option) && transportConfig.hasOwnProperty(option) == false) {
+        if(defaultConfig.hasOwnProperty(option) && transportConfig.hasOwnProperty(option) === false) {
             transportConfig[option] = defaultConfig[option];
         }
     }
