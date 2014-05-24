@@ -2,8 +2,8 @@ var querystring = require('querystring');
 var http = require('http');
 
 function notified(server, template, apiKey, message, callback) {
-    message['api_template'] = template;
-    message['api_key'] = apiKey;
+    message.api_template = template;
+    message.api_key = apiKey;
     var post_data = querystring.stringify(message);
 
     var options = {

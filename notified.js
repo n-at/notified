@@ -14,7 +14,7 @@ notification_template.load(function(err) {
         return;
     }
     server.listen(config.get('port'), config.get('host'));
-    log.log('info', 'notified started');
+    log.info('notified started');
 });
 
 process.on('uncaughtException', function(err) {
