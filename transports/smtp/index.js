@@ -75,6 +75,7 @@ SmtpTransport.prototype.notify = function(notification, callback) {
 
 function updateConfig(config) {
     //load default config
+    var defaultConfig = require('./defaultConfig');
     for(var option in defaultConfig) {
         if(defaultConfig.hasOwnProperty(option) && config.hasOwnProperty(option) === false) {
             config[option] = defaultConfig[option];
@@ -106,34 +107,5 @@ function getAttachments(notificationData) {
     }
     return attachments;
 }
-
-var defaultConfig = {
-    //connection options
-    auth: true,
-    username: null,
-    password: null,
-    pool_size: 5,
-
-    //message options
-    to: '',
-    from: '',
-    cc: '',
-    bcc: '',
-    reply_to: '',
-    subject: '',
-    body: '',
-    charset: 'utf-8',
-    html: true,
-    allow_attachments: false,
-
-    //override options
-    override_to: false,
-    override_from: false,
-    override_subject: false,
-    override_cc: false,
-    override_bcc: false,
-    override_reply_to: false,
-    override_body: true
-};
 
 module.exports = SmtpTransport;

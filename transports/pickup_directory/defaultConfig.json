@@ -1,0 +1,20 @@
+{
+    "to": "",
+    "from": "",
+    "cc": "",
+    "bcc": "",
+    "reply_to": "",
+    "subject": "",
+    "body": "",
+    "charset": "utf-8",
+    "html": true,
+    "allow_attachments": false,
+
+    "override_to": false,
+    "override_from": false,
+    "override_subject": false,
+    "override_cc": false,
+    "override_bcc": false,
+    "override_reply_to": false,
+    "override_body": true
+}

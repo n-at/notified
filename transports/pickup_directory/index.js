@@ -15,6 +15,7 @@ PickupTransport.prototype.notify = SmtpTransport.prototype.notify;
 
 function updateConfig(transportConfig) {
     //load default config
+    var defaultConfig = require('./defaultConfig');
     for(var option in defaultConfig) {
         if(defaultConfig.hasOwnProperty(option) && transportConfig.hasOwnProperty(option) === false) {
             transportConfig[option] = defaultConfig[option];
@@ -25,28 +26,5 @@ function updateConfig(transportConfig) {
 
     return transportConfig;
 }
-
-var defaultConfig = {
-    //message options
-    to: '',
-    from: '',
-    cc: '',
-    bcc: '',
-    reply_to: '',
-    subject: '',
-    body: '',
-    charset: 'utf-8',
-    html: true,
-    allow_attachments: false,
-
-    //override options
-    override_to: false,
-    override_from: false,
-    override_subject: false,
-    override_cc: false,
-    override_bcc: false,
-    override_reply_to: false,
-    override_body: true
-};
 
 module.exports = PickupTransport;
