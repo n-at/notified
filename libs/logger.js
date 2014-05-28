@@ -9,7 +9,7 @@ function getLogger(module) {
     var moduleName = module.filename.split(path.sep).slice(-2).join('/');
 
     if(!(module.filename in winston.loggers)) {
-        var logLevel = (ENV == 'development') ? 'debug' : 'info';
+        var logLevel = (ENV == 'development') ? 'debug' : config.get('log_level');
         winston.loggers.add(module.filename, {
             file: {
                 filename: path.join(config.get('log_path'), config.get('log_file')),

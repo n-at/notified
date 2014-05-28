@@ -3,6 +3,7 @@
     "port": "3000",
 
     "log_file": "notified.log",
+    "log_level": "info",
 
     "request_max_length": 5242880,
 
