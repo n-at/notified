@@ -96,7 +96,7 @@ function notificationSaveCallback(templateName) {
         } else {
             log.debug('Notification "%s" saved successfully', templateName);
         }
-    }
+    };
 }
 
 
