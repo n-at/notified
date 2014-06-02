@@ -16,19 +16,20 @@ function loadTemplates(callback) {
 
     var templatePath = config.get('template_path');
 
-    fs.readdir(templatePath, function(err, files) {
-        if (!err) {
-            for(var i = 0; i < files.length; i++) {
-                var fileName = files[i];
-                loadNotificationTemplate(fileName);
-            }
-            log.info('Notification templates loaded (Total: %d)', Object.keys(notificationTemplates).length);
-            callback();
-        } else {
-            log.error('Error occurred while fetching templates list (%s)', err.message);
-            callback(err);
-        }
-    });
+    var files = [];
+    try {
+        files = fs.readdirSync(templatePath);
+    } catch (err) {
+        log.error('Error occurred while fetching templates list (%s)', err.message);
+        callback(err);
+    }
+
+    for(var i = 0; i < files.length; i++) {
+        var fileName = files[i];
+        loadNotificationTemplate(fileName);
+    }
+    log.info('Notification templates loaded (Total: %d)', Object.keys(notificationTemplates).length);
+    callback();
 }
 
 
