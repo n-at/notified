@@ -1,6 +1,6 @@
 {
   "name": "notified",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Node notification daemon",
   "main": "notified.js",
   "scripts": {
