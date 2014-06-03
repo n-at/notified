@@ -12,7 +12,9 @@ var schema = new Schema({
     //date of creation
     dateCreated: {
         type: Date,
-        default: Date.now()
+        'default': function() {
+            return Date.now();
+        }
     },
 
     //date of transmission
