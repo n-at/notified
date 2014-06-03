@@ -3,7 +3,8 @@ var config = require('../config');
 var log = require('./logger')(module);
 
 var dsn = 'mongodb://' +
-    config.get('mongodb:host') +
+    config.get('mongodb:username') + ':' + config.get('mongodb:password') +
+    '@' + config.get('mongodb:host') +
     ':' + config.get('mongodb:port') +
     '/' + config.get('mongodb:dbname');
 
