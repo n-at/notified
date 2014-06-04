@@ -7,4 +7,4 @@ sudo apt-get update
 sudo apt-get install -y mongodb-org
 
 sudo sed -i 's/bind_ip/#bind_ip/' /etc/mongod.conf
-sudo service mongodb restart
+sudo service mongod restart
