@@ -17,6 +17,8 @@ To install, just run:
     cd notified
     npm install
 
+Don't forget to check out notified configuration in */config/config.json*.
+
 ##Starting notified
 
 To run notified:
