@@ -1,11 +1,11 @@
 SMTP transport
 --------------
 
-SMTP transport implementation uses [NodeMailer](http://www.nodemailer.com).
+SMTP transport implementation uses [NodeMailer SMTP transport](https://github.com/andris9/nodemailer-smtp-transport).
 
 Server configuration options:
 
-+ *service* - service identifier (optional, see the list of supported services below)
++ *service* - service identifier (optional, see the [list of supported services](https://github.com/andris9/nodemailer-wellknown#supported-services))
 + *auth* - does the server need an authentication data (default **true**)
 + *username* - user name on server
 + *password* - password for user
@@ -13,11 +13,8 @@ Server configuration options:
 + *port* - port of SMTP server (default **25**)
 + *secure* - use SSL (default **false**)
 + *tls* - use TLS (default **true**)
-+ *pool_size* - max number of connections in the pool (default **5**)
 
-If service specified, options *hostname*, *port*, *secure* and *tls* are not needed.
-
-Services supported by NodeMailer: DynectEmail, Gmail, hot.ee, Hotmail, iCloud, mail.ee, Mail.Ru, Mailgun, Mailjet, Mandrill, Postmark, QQ, QQex (Tencent Business Email), SendGrid, SES, Yahoo, yandex, Zoho
+If service specified, options *hostname*, *port*, *secure* and *tls* should not be specified.
 
 Message configuration options:
 

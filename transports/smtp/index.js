@@ -1,24 +1,33 @@
 var nodemailer = require('nodemailer');
+var smtpTransport = require('nodemailer-smtp-transport');
 
 var log = require('../../libs/logger')(module);
 
 function SmtpTransport(config) {
     this.config = updateConfig(config || {});
-    var options = {
-        service: this.config.service,
-        host: this.config.host,
-        port: this.config.port,
-        secureConnection: this.config.secure,
-        ignoreTLS: !this.config.tls,
-        maxConnections: this.config.pool_size
-    };
+
+    var options = {};
+
+    if(this.config.service !== undefined) {
+        options.service = this.config.service;
+    } else {
+        options.host = this.config.host;
+        options.port = this.config.port;
+    }
+    if(this.config.secureConnection !== undefined) {
+        options.secureConnection = this.config.secure;
+    }
+    if(this.config.tls !== undefined) {
+        options.ignoreTLS = !this.config.tls;
+    }
     if(this.config.auth) {
         options.auth = {
             user: this.config.username,
             pass: this.config.password
         };
     }
-    this.transport = nodemailer.createTransport('SMTP', options);
+
+    this.transport = nodemailer.createTransport(smtpTransport(options));
 }
 
 SmtpTransport.prototype.notify = function(notification, callback) {
@@ -47,7 +56,7 @@ SmtpTransport.prototype.notify = function(notification, callback) {
     //subject
     message.subject = (this.config.override_subject) ? notification.api_subject : this.config.subject;
     if(!message.subject) {
-        log.debug('Message missing subject');
+        log.debug('Message is missing subject');
     }
 
     //body
@@ -100,8 +109,9 @@ function getAttachments(notificationData) {
     for(var optionName in notificationData) {
         if(notificationData.hasOwnProperty(optionName) && optionName.match(/^api_attach_.+/)) {
             attachments.push({
-                fileName: optionName.substr('api_attach_'.length),
-                contents: (new Buffer(notificationData[optionName], 'base64'))
+                filename: optionName.substr('api_attach_'.length),
+                content: notificationData[optionName],
+                encoding: 'base64'
             });
         }
     }

@@ -21,9 +21,11 @@
     "mkdirp": "0.5.*",
     "mongoose": "3.8.*",
     "nconf": "0.6.*",
-    "nodemailer": "0.6.*",
+    "nodemailer": "1.4.*",
+    "nodemailer-pickup-transport": "0.1.*",
+    "nodemailer-smtp-transport": "1.*",
+    "qs": "~0.6.6",
     "twig": "^0.7.1",
-    "winston": "^0.7.3",
-    "qs": "~0.6.6"
+    "winston": "^0.7.3"
   }
 }

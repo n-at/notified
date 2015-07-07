@@ -2,7 +2,6 @@
     "auth": true,
     "username": null,
     "password": null,
-    "pool_size": 5,
 
     "to": "",
     "from": "",
