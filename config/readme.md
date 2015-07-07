@@ -8,4 +8,5 @@ Options:
 + *log_file* - log file name
 + *log_level* - importance level of events to be logged (can be **debug**, **info**, **warn** and **error**, default is **info**)
 + *request_max_length* - maximum length of incoming request (used for flood protection)
++ *use_mongodb* - use MongoDB for saving notifications
 + *mongodb* - MongoDb connection settings (*host*, *port* and *dbname*)

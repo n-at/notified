@@ -7,6 +7,8 @@
 
     "request_max_length": 5242880,
 
+    "use_mongodb": false,
+
     "mongodb": {
         "host": "localhost",
         "post": "27017",

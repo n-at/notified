@@ -1,7 +1,6 @@
 var config = require('../config');
 var notification_template = require('./notification_template');
 var log = require('./logger')(module);
-var Notification = require('./models/notification').Notification;
 
 
 function prepareNotification(notificationData) {
@@ -42,7 +41,11 @@ function executeNotificationTemplate(template, data) {
 
     var templateName = template.name;
     var notificationDocument = null;
-    if(template.db_save) { //prepare notification document
+
+    var saveNotificationInMongo = config.get('use_mongodb') && template.db_save;
+
+    if(saveNotificationInMongo) { //prepare notification document
+        var Notification = require('./models/notification').Notification;
         notificationDocument = new Notification({
             template: templateName,
             body: data
@@ -57,10 +60,12 @@ function executeNotificationTemplate(template, data) {
             renderedNotification = template.templateInstance.render(data);
         } catch(err) {
             log.error('Error occurred while rendering notification "%s" (%s)', templateName, err.message);
-            if(template.db_save) {
+
+            if(saveNotificationInMongo) {
                 notificationDocument.status = config.get('notify_error');
                 notificationDocument.save(notificationSaveCallback(templateName));
             }
+
             return;
         }
     }
@@ -80,7 +85,7 @@ function executeNotificationTemplate(template, data) {
         }
 
         //update document status
-        if(template.db_save) {
+        if(saveNotificationInMongo) {
             notificationDocument.set('status', status);
             notificationDocument.set('dateSent', dateSent);
             notificationDocument.save(notificationSaveCallback(templateName));
