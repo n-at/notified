@@ -1,4 +1,4 @@
-var config = require('../config');
+var config = require('./config');
 var notification_template = require('./notification_template');
 var log = require('./logger')(module);
 

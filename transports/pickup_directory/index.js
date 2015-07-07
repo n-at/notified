@@ -4,7 +4,7 @@ var pickupTransport = require('nodemailer-pickup-transport');
 var mkdirp = require('mkdirp');
 
 var SmtpTransport = require('../smtp');
-var config = require('../../config');
+var config = require('../../libs/config');
 
 function PickupTransport(config) {
     this.config = updateConfig(config || {});

@@ -1,6 +1,6 @@
 var qs = require('qs');
 
-var config = require('../config');
+var config = require('./config');
 var log = require('./logger')(module);
 var notification = require('./notification');
 

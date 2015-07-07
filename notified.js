@@ -1,6 +1,6 @@
 var http = require('http');
 
-var config = require('./config');
+var config = require('./libs/config');
 var log = require('./libs/logger')(module);
 var notification_template = require('./libs/notification_template');
 var notified_server = require('./libs/notified_server');

@@ -2,12 +2,13 @@ var nconf = require('nconf');
 var path = require('path');
 var mkdirp = require('mkdirp');
 
+var root = path.join(__dirname, '..');
+
 nconf.argv()
      .env()
-     .file(path.join(__dirname, 'config.json'));
+     .file(path.join(root, path.join('config', 'config.json')));
 
 //set up paths
-var root = path.join(__dirname, '..');
 nconf.set('root_path', root);
 nconf.set('log_path', path.join(root, 'logs'));
 nconf.set('template_path', path.join(root, 'templates'));

@@ -1,7 +1,7 @@
 var winston = require('winston');
 var path = require('path');
 
-var config = require('../config');
+var config = require('./config');
 
 var ENV = process.env.NODE_ENV;
 

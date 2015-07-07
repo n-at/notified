@@ -2,7 +2,7 @@ var fs = require('fs');
 var path = require('path');
 var twig = require('twig').twig;
 
-var config = require('../config');
+var config = require('./config');
 var log = require('./logger')(module);
 
 
