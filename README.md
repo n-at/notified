@@ -3,7 +3,7 @@ notified
 
 Node.js notification daemon
 
-##Installation
+## Installation
 
 **Requirements:**
 
@@ -19,7 +19,7 @@ To install, just run:
 
 Don't forget to check out notified configuration in */config/config.json*.
 
-##Starting notified
+## Starting notified
 
 To run notified:
 
@@ -29,7 +29,7 @@ notified also can be run as a system daemon:
 
     node notified-ctl [start|stop|restart|status|version]
 
-##Starting with *forever*
+## Starting with *forever*
 
 [Forever](https://github.com/nodejitsu/forever) - is a CLI tool that can run any script as daemon and restarts it when one crashed.
 
@@ -58,7 +58,7 @@ When notified is started, you can send it a POST request with notification data.
 (`api_template` field), template key (`api_key` field), transport configuration fields (if needed). Other request
 fields can be used for rendering the notification body.
 
-##Documentation
+## Documentation
 
 notified modules documentation can be found in files *readme.md* in respective directories.
 
